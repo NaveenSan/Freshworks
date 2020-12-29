@@ -18,7 +18,7 @@ void read();
 3.adding a count to 1
 4.if count is 1 the access to file is blocked and access code will end
 */
-int check_access(){
+int check_presence(){
     char temp[1000];
     int online_user;
     FILE *fpt = fopen("E:\\\\access.txt","r");
@@ -27,7 +27,12 @@ int check_access(){
         fpt = fopen("E:\\\\access.txt","w");
         fprintf(fpt,"access count : 0");
         fclose(fpt);}
-    fpt = fopen("E:\\\\access.txt","r");
+}
+
+int make_user_entry(){
+    char temp[1000];
+    int online_user;
+    FILE *fpt = fopen("E:\\\\access.txt","r");
     fgets(temp,1000,fpt);
     fclose(fpt);
     sscanf(temp,"access count : %d",&online_user);
@@ -37,20 +42,19 @@ int check_access(){
             fclose(fptr);
             remove("E:\\\\access.txt");
             rename("E:\\\\access_temp.txt","E:\\\\access.txt");
-            return 0;}
-    else{
-            printf("\nAlready user logged in\nIf no one logged IN \n Sorry for Inconvinence\n");
-            int return_access = 0;
-        B:
-            printf("\nEnter PIN (ADMIN only) to Grant Access in case of no user LOGGED IN\n else press --> 0\n");
-            scanf("%d",&return_access);
-            if(return_access == 1254701){call_back_access();return 0;}
-            else{printf("To try again press 1 else press 0");scanf("%d",&return_access);
-            if(return_access == 1){goto B;}}
             return 1;}
+    else{
+        printf("\nSomeone already accessing the Database\n");
+        return 0;
+    }
 }
 
-
+void make_user_exit(){
+        FILE *fpt;
+        fpt = fopen("E:\\\\access.txt","w+");
+        fprintf(fpt,"access count : 0");
+        fclose(fpt);
+}
 /*
 This is to change the access count to zero
 1.It will be executed when a user exits properly
@@ -64,7 +68,7 @@ static char pattern[] = "{\"key\":\"%s \" \"value\":\"%s \"  \"time\":%d}\n";
 int main(){
 
 //checking the availability
-if(check_access()==1){return 0;}
+if(check_presence()==1){return 0;}
 while(1){
     printf("\n----------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 //checking the file for Condition that....File size to be less than 1GB
@@ -90,7 +94,9 @@ while(1){
         //restore availability of access
         call_back_access();
         return 0;}
-    else{printf("\nEnter the correct Mode\n");}}}
+    else{printf("\nEnter the correct Mode\n");}
+    make_user_exit();
+    }}
 
 
 /*
@@ -114,6 +120,7 @@ char new_value[100],value[100];
 char temp[1000];int not_char;
 int sys_second = time(NULL),time;
 int additional_time,new_time;
+if(make_user_entry()){
 A:
 //Getting input from user
     printf("\nEnter Key  value  and additional time..  \n     if additional time need to be infinite,make it as negative value\n");
@@ -157,6 +164,10 @@ while(fgets(temp,1000,fptr)){
     fprintf(fptr,pattern,new_key,new_value,new_time);
     fclose(fptr);
 }
+else{
+    printf("\nCannot create Data into DB\n");
+}
+}
 
 int delete_pair(){
 //INITIALIZING REQUIRED VARIABLES
@@ -166,6 +177,7 @@ int line = 0;
 char delete_key[32];
 char temp[1000];
 int time,flag = 0;
+if(make_user_entry()){
 //ENTER THE KEY
 printf("\nEnter the Key of Pair to delete\n");
 scanf("%s",delete_key);
@@ -186,7 +198,7 @@ fclose(fptrt);
 //RENAMING THE FILE
 remove("E:\\\\new.txt");
 rename("E:\\\\temp.txt","E:\\\\new.txt");
-return 0;}
+return 0;}}
 
 void print_all(){
 int flag = 0;
@@ -203,6 +215,7 @@ if(flag == 0){printf("\nEmpty file\nInsert new data :)");}}
 void check_every_time(){
 int system_second = time(NULL),time;
 char temp[1000],key[32],value[100];
+if(make_user_entry){
 //OPENNING FILES
 FILE *fptr = fopen("E:\\\\new.txt","r");
 FILE *fptrt = fopen("E:\\\\temp.txt","a+");
@@ -218,7 +231,7 @@ fclose(fptr);
 fclose(fptrt);
 //RENAMING THE FILE
 remove("E:\\\\new.txt");
-rename("E:\\\\temp.txt","E:\\\\new.txt");}
+rename("E:\\\\temp.txt","E:\\\\new.txt");}}
 
 
 void read(){
@@ -228,6 +241,7 @@ char value[100];
 char read_key[32];
 char temp[1000];
 int time,flag = 0;
+if(make_user_entry()){
 //ENTER THE KEY
 printf("\nEnter the Key of Pair to find the value\n");
 scanf("%s",read_key);
@@ -243,4 +257,4 @@ while(fgets(temp,1000,fptr)){
     }
 if(flag == 0){printf("\nNo Data with Key name %s is found\n",read_key);}
 fclose(fptr);
-return;}
+return;}}
