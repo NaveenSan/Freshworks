@@ -92,7 +92,6 @@ while(1){
         else{printf("Enter the Correct PIN");}}
     else if(mode[0] == '6'){
         //restore availability of access
-        call_back_access();
         return 0;}
     else{printf("\nEnter the correct Mode\n");}
     make_user_exit();

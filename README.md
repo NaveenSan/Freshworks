@@ -48,6 +48,9 @@ LIBRARIES USED:
   
   string.h-->using string function - strcpy only used
   
+  If ACCESS CODE is 1 --> Some one is already accessing the file
+  If ACCESS CODE is 0 --> No one is accessing the file
+  
 
 
 EXPLANATION OF CRD IMPLEMENTATION:
@@ -55,6 +58,7 @@ EXPLANATION OF CRD IMPLEMENTATION:
 
      I have Implemented File like a DATABASE.
      CREATE :
+            
             Initially checking the presense of new.txt - If no file found, new.txt will be created
             Getting the input from the user in format  % KEY <space> VALUE <space> TIME %
             Checking the constrains of 
@@ -62,22 +66,29 @@ EXPLANATION OF CRD IMPLEMENTATION:
                                       2.VALUE < 17KB
                                       3.TIME > 0
             Transversing through the file to check KEY unique value
+            Setting access code in access.txt as 1
             If all the above constraints passed :
                     new.txt file -> stores each input data in new line 
+            Setting access code in access.txt as 0
   
     READ :
           Getting the KEY to find match value
           Transversing through the file and searching for the data with same KEY
+          Setting access code in access.txt as 1
           If the KEY matched:
                   return the VALUE and KEY
-                  
+          Setting access code in access.txt as 0
+          
     DELETE :
           Getting the KEY to find 
           Transversing through the file and searching for the data with same KEY
+          Setting access code in access.txt as 1
           If the KEY matched:
                   The data will be deleted
-           
-          Process of deleting a line / data:
+          Setting access code in access.txt as 0
+      
+      
+      Process of deleting a line / data:
                 Initializing a file named temp.txt
                 Transversing through the data
                         If the KEY matches,Data is not copied to temp.txt
@@ -85,7 +96,7 @@ EXPLANATION OF CRD IMPLEMENTATION:
                         removing new.txt and renaming temp.txt ->new.txt
     
           
- I tried to implement the Access to one user restricting multiple user to run the same code twice.
+ I tried to implement the Access to one user restricting multiple user to access the same file twice.
 
 
 This is only possible if user exit properly.
